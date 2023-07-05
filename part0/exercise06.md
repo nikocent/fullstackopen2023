@@ -1,5 +1,6 @@
 # Exercise 0.6 diagram
 
+```mermaid
 sequenceDiagram
     participant browser
     participant server
@@ -11,3 +12,4 @@ sequenceDiagram
     deactivate server
 
     Note right of browser: After 201, browser stays in the same page and continues executing event-handler which updates and re-render notes 
+```
