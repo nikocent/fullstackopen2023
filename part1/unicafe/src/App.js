@@ -3,6 +3,7 @@ const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</bu
 
 const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
+  if (total === 0) return <h3>No feedback given</h3>
   const average = (good - bad) / total
   const positive = (good / total) * 100
   return (
