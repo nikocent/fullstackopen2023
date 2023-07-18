@@ -1,29 +1,42 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 
-const ShowInfo = ({countries}) => {
-  if (countries.length === 1){
-    return (
-      <>
-        <h1>{countries[0].name.common}</h1>
-        <span>capital {countries[0].capital[0]}<br></br></span>
-        <span>area {countries[0].area}</span>
+const CountryInfo = ({country}) => {
+  return (
+    <>
+        <h1>{country.name.common}</h1>
+        <span>capital {country.capital[0]}<br></br></span>
+        <span>area {country.area}</span>
         <h3>languages:</h3>
           <ul>
-            {Object.values(countries[0].languages).map(item => <li key={item}>{item}</li>)}
+            {Object.values(country.languages).map(item => <li key={item}>{item}</li>)}
           </ul>
         <img 
           alt="Country's flag"
-          src={countries[0].flags.svg}
+          src={country.flags.svg}
           style={{ height: "120px"}}
         /> 
       </>
+  )
+}
+
+const ShowInfo = ({countries, setFilteredCountries}) => {
+  if (countries.length === 1){
+    return (
+      <CountryInfo country={countries[0]}/>
     )
   }
   return(
       <>
         {countries.map(item => 
-          <span key={item.flag}>{item.name.common}<br></br></span>  
+          <span 
+          key={item.flag}>
+            {item.name.common}
+            <button onClick={() => {
+              setFilteredCountries([item])
+              }}>show</button>
+            <br></br>
+          </span>  
         )}
       </>
     )
@@ -62,7 +75,10 @@ function App() {
         value={newSearch}
       />
       <div>
-        <ShowInfo countries={filteredCountries}/>
+        <ShowInfo 
+        countries={filteredCountries}
+        setFilteredCountries={setFilteredCountries}
+        />
       </div>
     </>
   )
