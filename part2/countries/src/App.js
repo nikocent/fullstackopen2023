@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
+import WeatherInfo from './components/WeatherInfo'
 
 const CountryInfo = ({country}) => {
   return (
@@ -15,17 +16,18 @@ const CountryInfo = ({country}) => {
           alt="Country's flag"
           src={country.flags.svg}
           style={{ height: "120px"}}
-        /> 
+        />
+        <WeatherInfo 
+        capital={country.capital}
+        lat={country.capitalInfo.latlng[0]} 
+        lon={country.capitalInfo.latlng[1]}/>
       </>
   )
 }
 
 const ShowInfo = ({countries, setFilteredCountries}) => {
-  if (countries.length === 1){
-    return (
-      <CountryInfo country={countries[0]}/>
-    )
-  }
+  if(countries.length === 0) return <p>No country found</p>
+  if (countries.length === 1) return <CountryInfo country={countries[0]}/>
   return(
       <>
         {countries.map(item => 
