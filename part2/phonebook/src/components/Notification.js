@@ -1,13 +1,11 @@
-const Notification = ({ message }) => {
-    if (message === null) {
-      return null
-    }
-  
+const Notification = ({message, type}) => {
+    if (type === 'error' || type === 'success'|| type === 'hide') 
     return (
-      <div className='error'>
+      <div className={type}> {/*either error or success*/}
         {message}
       </div>
     )
+    return console.error('Unsupported type')
   }
 
   export default Notification

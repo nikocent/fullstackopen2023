@@ -2,23 +2,8 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "",
       "id": 1
-    },
-    {
-      "name": "pipa",
-      "number": "4381009880",
-      "id": 3
-    },
-    {
-      "name": "asd",
-      "number": "123456123",
-      "id": 4
-    },
-    {
-      "name": "hello",
-      "number": "4323241",
-      "id": 6
     }
   ]
 }

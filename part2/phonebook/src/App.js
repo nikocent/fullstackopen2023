@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
-  const [notification, setNotification] = useState(null)
+  const [notification, setNotification] = useState({message: null, type:'hide'})
   
   useEffect(() => {
     personsService
@@ -41,15 +41,19 @@ const App = () => {
         personsService
         .updatePerson(person.id, newPerson)
         .then(response => {
-          setPersons(persons.map(item => item.id !== person.id ? item : response.data))
-          setNewName('')
-          setNewNumber('')
-          setNotification(
-            `Updated ${newPerson.name}'s number`
-          )
-          setTimeout(() => {
-            setNotification(null)
-          }, 5000)
+          if (response.status === 200) {
+            personsService
+              .getAllPersons()
+              .then(response => setPersons(response.data))
+            newNotification(`Updated ${newPerson.name}'s number`, 'success')
+            setNewName('')
+            setNewNumber('')
+          } else if (response.status === 404){
+            personsService
+              .getAllPersons()
+              .then(response => setPersons(response.data))
+            newNotification(`${newPerson.name} was already deleted from the phonebook`, 'error')
+          }
         })
       }
     } else {
@@ -59,12 +63,7 @@ const App = () => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
-          setNotification(
-            `Added ${newPerson.name}`
-          )
-          setTimeout(() => {
-            setNotification(null)
-          }, 5000)
+          newNotification(`Added ${newPerson.name}`, 'success')
         })
     }
   }
@@ -73,16 +72,37 @@ const App = () => {
       personsService
         .deletePerson(id)
         .then(response => {
-          const updatedPersons = persons.filter(person => person.id !== id)
-          setPersons(updatedPersons)
+          if (response.status === 200){
+            personsService
+              .getAllPersons()
+              .then(response => setPersons(response.data))
+            newNotification(`Deleted ${name}`, 'success')
+          } else if (response.status === 404) {
+            personsService
+              .getAllPersons()
+              .then(response => setPersons(response.data))
+            newNotification(`${name} was already deleted from the phonebook`, 'error')
+          }
         })
+        
     }
   }
 
+  const newNotification = (message, type) => {
+      setNotification({
+        message, type
+      })
+      setTimeout(() => {
+        setNotification({message: null, type: 'hide'})
+      }, 5000)
+  }
   return (
     <div>
       <h2>Phonebook</h2>
-        <Notification message={notification}/>
+        <Notification 
+        message={notification.message}
+        type={notification.type}
+        />
         <Filter
           handleNewSearch={handleNewSearch}
           newSearch={newSearch}

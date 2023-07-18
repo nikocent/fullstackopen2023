@@ -1,4 +1,15 @@
 .error {
+    display: block;
+    color: red;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.success {
+    display: block;
     color: green;
     background: lightgrey;
     font-size: 20px;
@@ -6,4 +17,8 @@
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
-  }
+}
+
+.hide {
+    display: none;
+}
