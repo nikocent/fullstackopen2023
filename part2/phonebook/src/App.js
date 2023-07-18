@@ -17,7 +17,7 @@ const App = () => {
       setPersons(response.data)
     })
   },[])
-  console.log(persons)
+
   const handleNewName = (event) => setNewName(event.target.value)
   const handleNewNumber = (event) => setNewNumber(event.target.value)
   const handleNewSearch = (event) => setNewSearch(event.target.value)
@@ -33,9 +33,14 @@ const App = () => {
     }
 
     if (!isNameDuplicated(newName)){
-      setPersons(persons.concat(newPerson))
-      setNewName('')
-      setNewNumber('')
+      
+      axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
     } else {
       alert(`${newName} is already added to the phonebook`)
     }
