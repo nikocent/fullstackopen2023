@@ -31,17 +31,27 @@ const App = () => {
       number: newNumber
     }
 
-    if (!isNameDuplicated(newName)){
-      
-      personsService
-      .createPerson(newPerson)
-      .then(response => {
-        setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewNumber('')
-      })
+    if (isNameDuplicated(newName))
+    {
+      if(window.confirm(`${newName} already exists, do you wanna replace the old number with a new one?`))
+      {
+        const person = persons.find(item => item.name === newName)
+        personsService
+        .updatePerson(person.id, newPerson)
+        .then(response => {
+          setPersons(persons.map(item => item.id !== person.id ? item : response.data))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
     } else {
-      alert(`${newName} is already added to the phonebook`)
+      personsService
+        .createPerson(newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
   const deletePerson = (id, name) => {
